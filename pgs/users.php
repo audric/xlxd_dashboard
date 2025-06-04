@@ -8,6 +8,10 @@ if (!isset($_SESSION['FilterModule'])) {
    $_SESSION['FilterModule'] = null;
 }
 
+if (!isset($_SESSION['FilterModulesArray'])) {
+   $_SESSION['FilterModulesArray'] = null;
+}
+
 if (isset($_POST['do'])) {
    if ($_POST['do'] == 'SetFilter') {
 
@@ -26,14 +30,16 @@ if (isset($_POST['do'])) {
       }
 
       if (isset($_POST['txtSetModuleFilter'])) {
-         $_POST['txtSetModuleFilter'] = trim($_POST['txtSetModuleFilter']);
-         if ($_POST['txtSetModuleFilter'] == "") {
+         $rawModuleFilter = trim($_POST['txtSetModuleFilter']);
+         if ($rawModuleFilter == "") {
             $_SESSION['FilterModule'] = null;
+            $_SESSION['FilterModulesArray'] = null;
          }
          else {
-            $_SESSION['FilterModule'] = htmlspecialchars($_POST['txtSetModuleFilter'], ENT_QUOTES, 'UTF-8');
+            $_SESSION['FilterModule'] = htmlspecialchars($rawModuleFilter, ENT_QUOTES, 'UTF-8');
+            // Convert to uppercase and split into an array of characters
+            $_SESSION['FilterModulesArray'] = str_split(strtoupper($rawModuleFilter));
          }
-
       }
    }
 }
@@ -41,6 +47,7 @@ if (isset($_POST['do'])) {
 if (isset($_GET['do'])) {
    if ($_GET['do'] == "resetfilter") {
       $_SESSION['FilterModule'] = null;
+      $_SESSION['FilterModulesArray'] = null;
       $_SESSION['FilterCallSign'] = null;
    }
 }
@@ -75,7 +82,7 @@ if ($PageOptions['UserPage']['ShowFilter']) {
             <td align="right" style="padding-right:3px;">
                <form name="frmFilterModule" method="post" action="./index.php">
                   <input type="hidden" name="do" value="SetFilter" />
-                  <input type="text" class="FilterField" value="'.htmlspecialchars((string)$_SESSION['FilterModule'], ENT_QUOTES, 'UTF-8').'" name="txtSetModuleFilter" placeholder="Module" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
+                  <input type="text" class="FilterField" value="'.htmlspecialchars((string)$_SESSION['FilterModule'], ENT_QUOTES, 'UTF-8').'" name="txtSetModuleFilter" placeholder="Module(s)" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
                   <input type="submit" value="Apply" class="FilterSubmit" />
                </form>
             </td>
@@ -108,12 +115,22 @@ for ($i=0;$i<$Reflector->StationCount();$i++) {
             $CS = false;
          }
       }
-      $MO = true;
-      if ($_SESSION['FilterModule'] != null) {
-         if (trim(strtolower($_SESSION['FilterModule'])) != strtolower($Reflector->Stations[$i]->GetModule())) {
-            $MO = false;
-         }
+      $MO = true; // Assume module filter passes by default
+      if (isset($_SESSION['FilterModulesArray']) && !empty($_SESSION['FilterModulesArray'])) {
+          $stationModule = strtoupper($Reflector->Stations[$i]->GetModule());
+          $moduleMatchFound = false;
+          foreach ($_SESSION['FilterModulesArray'] as $filterModule) {
+              // Ensure $filterModule is a string and compare
+              if (is_string($filterModule) && strtoupper($filterModule) == $stationModule) {
+                  $moduleMatchFound = true;
+                  break;
+              }
+          }
+          if (!$moduleMatchFound) {
+              $MO = false; // Station's module not in the filter list
+          }
       }
+      // If $_SESSION['FilterModulesArray'] is null or empty, $MO remains true, effectively not filtering by module.
 
       $ShowThisStation = ($CS && $MO);
    }
