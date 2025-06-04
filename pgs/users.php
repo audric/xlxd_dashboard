@@ -10,30 +10,30 @@ if (!isset($_SESSION['FilterModule'])) {
 
 if (isset($_POST['do'])) {
    if ($_POST['do'] == 'SetFilter') {
-      
+
       if (isset($_POST['txtSetCallsignFilter'])) {
          $_POST['txtSetCallsignFilter'] = trim($_POST['txtSetCallsignFilter']);
          if ($_POST['txtSetCallsignFilter'] == "") {
             $_SESSION['FilterCallSign'] = null;
          }
          else {
-            $_SESSION['FilterCallSign'] = $_POST['txtSetCallsignFilter'];
+            $_SESSION['FilterCallSign'] = htmlspecialchars($_POST['txtSetCallsignFilter'], ENT_QUOTES, 'UTF-8');
             if (strpos($_SESSION['FilterCallSign'], "*") === false) {
                $_SESSION['FilterCallSign'] = "*".$_SESSION['FilterCallSign']."*";
             }
          }
-         
+
       }
-      
+
       if (isset($_POST['txtSetModuleFilter'])) {
          $_POST['txtSetModuleFilter'] = trim($_POST['txtSetModuleFilter']);
          if ($_POST['txtSetModuleFilter'] == "") {
             $_SESSION['FilterModule'] = null;
          }
          else {
-            $_SESSION['FilterModule'] = $_POST['txtSetModuleFilter'];
+            $_SESSION['FilterModule'] = htmlspecialchars($_POST['txtSetModuleFilter'], ENT_QUOTES, 'UTF-8');
          }
-         
+
       }
    }
 }
@@ -44,16 +44,16 @@ if (isset($_GET['do'])) {
       $_SESSION['FilterCallSign'] = null;
    }
 }
-   
+
 
 ?>
 <table border="0">
    <tr>
       <td  valign="top">
-         
+
 
 <table class="listingtable"><?php
-  
+
 if ($PageOptions['UserPage']['ShowFilter']) {
    echo '
  <tr>
@@ -63,19 +63,19 @@ if ($PageOptions['UserPage']['ShowFilter']) {
             <td align="left">
                <form name="frmFilterCallSign" method="post" action="./index.php">
                   <input type="hidden" name="do" value="SetFilter" />
-                  <input type="text" class="FilterField" value="'.$_SESSION['FilterCallSign'].'" name="txtSetCallsignFilter" placeholder="Callsign" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
+                  <input type="text" class="FilterField" value="'.htmlspecialchars((string)$_SESSION['FilterCallSign'], ENT_QUOTES, 'UTF-8').'" name="txtSetCallsignFilter" placeholder="Callsign" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
                   <input type="submit" value="Apply" class="FilterSubmit" />
                </form>
             </td>';
-   if (($_SESSION['FilterModule'] != null) || ($_SESSION['FilterCallSign'] != null)) {               
+   if (($_SESSION['FilterModule'] != null) || ($_SESSION['FilterCallSign'] != null)) {
       echo '
          <td><a href="./index.php?do=resetfilter" class="smalllink">Disable filters</a></td>';
-   }  
-   echo '            
+   }
+   echo '
             <td align="right" style="padding-right:3px;">
                <form name="frmFilterModule" method="post" action="./index.php">
                   <input type="hidden" name="do" value="SetFilter" />
-                  <input type="text" class="FilterField" value="'.$_SESSION['FilterModule'].'" name="txtSetModuleFilter" placeholder="Module" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
+                  <input type="text" class="FilterField" value="'.htmlspecialchars((string)$_SESSION['FilterModule'], ENT_QUOTES, 'UTF-8').'" name="txtSetModuleFilter" placeholder="Module" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
                   <input type="submit" value="Apply" class="FilterSubmit" />
                </form>
             </td>
@@ -83,10 +83,10 @@ if ($PageOptions['UserPage']['ShowFilter']) {
    </th>
 </tr>';
 }
-                
-   
-?>   
- <tr>   
+
+
+?>
+ <tr>
    <th>#</th>
    <th>Flag</th>
    <th>Callsign</th>
@@ -114,12 +114,12 @@ for ($i=0;$i<$Reflector->StationCount();$i++) {
             $MO = false;
          }
       }
-      
+
       $ShowThisStation = ($CS && $MO);
    }
-      
-      
-   if ($ShowThisStation) {   
+
+
+   if ($ShowThisStation) {
       if ($odd == "#FFFFFF") { $odd = "#F1FAFA"; } else { $odd = "#FFFFFF"; }
       echo '
   <tr height="30" bgcolor="'.$odd.'" onMouseOver="this.bgColor=\'#FFFFCA\';" onMouseOut="this.bgColor=\''.$odd.'\';">
@@ -130,65 +130,65 @@ for ($i=0;$i<$Reflector->StationCount();$i++) {
       else {
          echo ($i+1);
       }
-   
-   
+
+
       echo '</td>
    <td align="center" width="60">';
-   
+
       list ($Flag, $Name) = $Reflector->GetFlag($Reflector->Stations[$i]->GetCallSign());
       if (file_exists("./img/flags/".$Flag.".png")) {
-         echo '<a href="#" class="tip"><img src="./img/flags/'.$Flag.'.png" height="15" alt="'.$Name.'" /><span>'.$Name.'</span></a>';
+         echo '<a href="#" class="tip"><img src="./img/flags/'.htmlspecialchars($Flag, ENT_QUOTES, 'UTF-8').'.png" height="15" alt="'.htmlspecialchars($Name, ENT_QUOTES, 'UTF-8').'" /><span>'.htmlspecialchars($Name, ENT_QUOTES, 'UTF-8').'</span></a>';
       }
       echo '</td>
-   <td width="75"><a href="https://www.qrz.com/db/'.$Reflector->Stations[$i]->GetCallsignOnly().'" class="pl" target="_blank">'.$Reflector->Stations[$i]->GetCallsignOnly().'</a></td>
-   <td width="60">'.$Reflector->Stations[$i]->GetSuffix().'</td>
-   <td width="50" align="center"><a href="http://www.aprs.fi/'.$Reflector->Stations[$i]->GetCallsignOnly().'" class="pl" target="_blank"><img src="./img/sat.png" /></a></td>
-   <td width="150">'.$Reflector->Stations[$i]->GetVia();
+   <td width="75"><a href="https://www.qrz.com/db/'.htmlspecialchars($Reflector->Stations[$i]->GetCallsignOnly(), ENT_QUOTES, 'UTF-8').'" class="pl" target="_blank">'.htmlspecialchars($Reflector->Stations[$i]->GetCallsignOnly(), ENT_QUOTES, 'UTF-8').'</a></td>
+   <td width="60">'.htmlspecialchars($Reflector->Stations[$i]->GetSuffix(), ENT_QUOTES, 'UTF-8').'</td>
+   <td width="50" align="center"><a href="http://www.aprs.fi/'.htmlspecialchars($Reflector->Stations[$i]->GetCallsignOnly(), ENT_QUOTES, 'UTF-8').'" class="pl" target="_blank"><img src="./img/sat.png" /></a></td>
+   <td width="150">'.htmlspecialchars($Reflector->Stations[$i]->GetVia(), ENT_QUOTES, 'UTF-8');
       if ($Reflector->Stations[$i]->GetPeer() != $Reflector->GetReflectorName()) {
-         echo ' / '.$Reflector->Stations[$i]->GetPeer();
+         echo ' / '.htmlspecialchars($Reflector->Stations[$i]->GetPeer(), ENT_QUOTES, 'UTF-8');
       }
       echo '</td>
    <td width="150">'.@date("d.m.Y H:i", $Reflector->Stations[$i]->GetLastHeardTime()).'</td>
-   <td align="center" width="30">'.$Reflector->Stations[$i]->GetModule().'</td>
+   <td align="center" width="30">'.htmlspecialchars($Reflector->Stations[$i]->GetModule(), ENT_QUOTES, 'UTF-8').'</td>
  </tr>';
    }
    if ($i == $PageOptions['LastHeardPage']['LimitTo']) { $i = $Reflector->StationCount()+1; }
 }
 
-?> 
- 
+?>
+
 </table>
 
 
 </td>
 <td style="padding-left:50px;" align="center" valign="top">
-   
-   
+
+
 
 
 <table class="listingtable">
-<?php 
+<?php
 
 $Modules = $Reflector->GetModules();
 sort($Modules, SORT_STRING);
 echo '
  <tr>';
 for ($i=0;$i<count($Modules);$i++) {
-   
+
    if (isset($PageOptions['ModuleNames'][$Modules[$i]])) {
       echo '
-   
-      <th>'.$PageOptions['ModuleNames'][$Modules[$i]];
+
+      <th>'.htmlspecialchars($PageOptions['ModuleNames'][$Modules[$i]], ENT_QUOTES, 'UTF-8');
       if (trim($PageOptions['ModuleNames'][$Modules[$i]]) != "") {
          echo '<br />';
       }
-      echo $Modules[$i].'</th>
+      echo htmlspecialchars($Modules[$i], ENT_QUOTES, 'UTF-8').'</th>
 ';
    }
    else {
    echo '
-  
-      <th>'.$Modules[$i].'</th>';
+
+      <th>'.htmlspecialchars($Modules[$i], ENT_QUOTES, 'UTF-8').'</th>';
    }
 }
 
@@ -203,25 +203,25 @@ for ($i=0;$i<count($Modules);$i++) {
    $Users = $Reflector->GetNodesInModulesByID($Modules[$i]);
    echo '
    <td valign="top" style="border:0px;padding:0px;">
-   
+
       <table width="100" border="0" style="padding:0px;margin:0px;">';
    $odd = "";
-   
+
    $UserCheckedArray = array();
-   
+
    for ($j=0;$j<count($Users);$j++) {
-      
+
       if ($odd == "#FFFFFF") { $odd = "#F1FAFA"; } else { $odd = "#FFFFFF"; }
       $Displayname = $Reflector->GetCallsignAndSuffixByID($Users[$j]);
       echo '
             <tr height="25" bgcolor="'.$odd.'" onMouseOver="this.bgColor=\'#FFFFCA\';" onMouseOut="this.bgColor=\''.$odd.'\';">
-               <td valign="top" style="border-bottom:1px #C1DAD7 solid;"><a href="http://www.aprs.fi/'.$Displayname.'" class="pl" target="_blank">'.$Displayname.'</a> </td>
+               <td valign="top" style="border-bottom:1px #C1DAD7 solid;"><a href="http://www.aprs.fi/'.htmlspecialchars($Displayname, ENT_QUOTES, 'UTF-8').'" class="pl" target="_blank">'.htmlspecialchars($Displayname, ENT_QUOTES, 'UTF-8').'</a> </td>
             </tr>';
       $UserCheckedArray[] = $Users[$j];
    }
    echo '
       </table>
-   
+
    </td>';
 }
 
@@ -229,9 +229,9 @@ echo '
 </tr>';
 
 ?>
-</table>    
+</table>
 
 
 </td>
 </tr>
-</table>     
+</table>

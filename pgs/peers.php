@@ -54,16 +54,16 @@ for ($i=0;$i<$Reflector->PeerCount();$i++) {
    }
    if ($Result && (trim($URL) != "")) {
       echo '
-   <td><a href="'.$URL.'" target="_blank" class="listinglink" title="Visit the Dashboard of&nbsp;'.$Name.'" style="text-decoration:none;color:#000000;">'.$Name.'</a></td>';
+   <td><a href="'.htmlspecialchars($URL, ENT_QUOTES, 'UTF-8').'" target="_blank" class="listinglink" title="Visit the Dashboard of&nbsp;'.htmlspecialchars($Name, ENT_QUOTES, 'UTF-8').'" style="text-decoration:none;color:#000000;">'.htmlspecialchars($Name, ENT_QUOTES, 'UTF-8').'</a></td>';
    } else {
       echo '
-   <td>'.$Name.'</td>';
+   <td>'.htmlspecialchars($Name, ENT_QUOTES, 'UTF-8').'</td>';
    }
    echo '
    <td>'.date("d.m.Y H:i", $Reflector->Peers[$i]->GetLastHeardTime()).'</td>
    <td>'.FormatSeconds(time()-$Reflector->Peers[$i]->GetConnectTime()).' s</td>
-   <td align="center">'.$Reflector->Peers[$i]->GetProtocol().'</td>
-   <td align="center">'.$Reflector->Peers[$i]->GetLinkedModule().'</td>';
+   <td align="center">'.htmlspecialchars($Reflector->Peers[$i]->GetProtocol(), ENT_QUOTES, 'UTF-8').'</td>
+   <td align="center">'.htmlspecialchars($Reflector->Peers[$i]->GetLinkedModule(), ENT_QUOTES, 'UTF-8').'</td>';
    if ($PageOptions['PeerPage']['IPModus'] != 'HideIP') {
       echo '
    <td>';
@@ -73,7 +73,7 @@ for ($i=0;$i<$Reflector->PeerCount();$i++) {
             case 'ShowLast1ByteOfIP'      : echo $PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$Bytes[3]; break;
             case 'ShowLast2ByteOfIP'      : echo $PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$Bytes[2].'.'.$Bytes[3]; break;
             case 'ShowLast3ByteOfIP'      : echo $PageOptions['PeerPage']['MasqueradeCharacter'].'.'.$Bytes[1].'.'.$Bytes[2].'.'.$Bytes[3]; break;
-            default                       : echo $Reflector->Peers[$i]->GetIP();
+            default                       : echo htmlspecialchars($Reflector->Peers[$i]->GetIP(), ENT_QUOTES, 'UTF-8');
          }
       }
       echo '</td>';
