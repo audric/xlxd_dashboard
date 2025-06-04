@@ -1,1 +1,8 @@
-# testing github not a real usable project here....
+# XLXd enhanced version
+
+
+## Chagelog:
+- Mitigated several XSS vulnerabilities
+- Updated vulnerable and outedated jQuery
+- Implemented multi module filtering
+

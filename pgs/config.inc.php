@@ -55,7 +55,8 @@ $PageOptions['IRCDDB']['Show']                       = true;        // Show live
 $PageOptions['CustomTXT']                            = '';					// custom text in your header   
 
 $Service['PIDFile']                                  = '/var/log/xlxd.pid';
-$Service['XMLFile']                                  = '/var/log/xlxd.xml';
+#$Service['XMLFile']                                  = '/var/log/xlxd.xml';
+$Service['XMLFile']                                  = '/home/audric/dev/xlxd_dashboard/xlxd.xml';
 
 $CallingHome['Active']                               = false;					// xlx phone home, true or false
 $CallingHome['MyDashBoardURL']                       = 'http://your_dashboard';			// dashboard url

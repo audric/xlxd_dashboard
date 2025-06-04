@@ -94,7 +94,7 @@ else {
 
    if ($PageOptions['PageRefreshActive']) {
       echo '
-   <script src="./js/jquery-1.12.4.min.js"></script>
+   <script src="./js/jquery-3.7.1.min.js"></script>
    <script>
       var PageRefresh;
       
@@ -135,23 +135,23 @@ else {
       <div id="menu">
          <table border="0">
             <tr>
-               <td><a href="./index.php" class="menulink<?php if ($_GET['show'] == '') { echo 'active'; } ?>">Users / Modules</a></td>
-               <td><a href="./index.php?show=repeaters" class="menulink<?php if ($_GET['show'] == 'repeaters') { echo 'active'; } ?>">Repeaters / Nodes (<?php echo $Reflector->NodeCount(); ?>)</a></td>
-               <td><a href="./index.php?show=peers" class="menulink<?php if ($_GET['show'] == 'peers') { echo 'active'; } ?>">Peers (<?php echo $Reflector->PeerCount(); ?>)</a></td>
-               <td><a href="./index.php?show=modules" class="menulink<?php if ($_GET['show'] == 'modules') { echo 'active'; } ?>">Modules list</a></td>
-               <td><a href="./index.php?show=reflectors" class="menulink<?php if ($_GET['show'] == 'reflectors') { echo 'active'; } ?>">Reflectors list</a></td>
+               <td><a href="./index.php" class="menulink<?php if ($show == '') { echo 'active'; } ?>">Users / Modules</a></td>
+               <td><a href="./index.php?show=repeaters" class="menulink<?php if ($show == 'repeaters') { echo 'active'; } ?>">Repeaters / Nodes (<?php echo $Reflector->NodeCount(); ?>)</a></td>
+               <td><a href="./index.php?show=peers" class="menulink<?php if ($show == 'peers') { echo 'active'; } ?>">Peers (<?php echo $Reflector->PeerCount(); ?>)</a></td>
+               <td><a href="./index.php?show=modules" class="menulink<?php if ($show == 'modules') { echo 'active'; } ?>">Modules list</a></td>
+               <td><a href="./index.php?show=reflectors" class="menulink<?php if ($show == 'reflectors') { echo 'active'; } ?>">Reflectors list</a></td>
                <?php
                
                if ($PageOptions['Traffic']['Show']) {
                    echo '
                <td><a href="./index.php?show=traffic" class="menulink';
-                   if ($_GET['show'] == 'traffic') { echo 'active'; }
+                   if ($show == 'traffic') { echo 'active'; }
                    echo '">Traffic statistics</a></td>';
                }
 		     if ($PageOptions['IRCDDB']['Show']) {
                    echo '
                <td><a href="./index.php?show=liveircddb" class="menulink';
-                   if ($_GET['show'] == 'liveircddb') { echo 'active'; }
+                   if ($show == 'liveircddb') { echo 'active'; }
                    echo '">D-Star live</a></td>';
               }
                
@@ -172,7 +172,11 @@ else {
       }
    }
 
-   switch ($_GET['show']) {
+   // Before using $_GET['show'], sanitize and validate:
+   $allowedShows = ['users', 'repeaters', 'liveircddb', 'peers', 'modules', 'reflectors', 'traffic'];
+   $show = isset($_GET['show']) && in_array($_GET['show'], $allowedShows) ? $_GET['show'] : '';
+
+   switch ($show) {
       case 'users'      : require_once("./pgs/users.php"); break;
       case 'repeaters'  : require_once("./pgs/repeaters.php"); break;
       case 'liveircddb' : require_once("./pgs/liveircddb.php"); break;
