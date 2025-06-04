@@ -22,18 +22,16 @@ if (isset($_POST['do'])) {
                $_SESSION['FilterCallSign'] = "*".$_SESSION['FilterCallSign']."*";
             }
          }
-
       }
 
       if (isset($_POST['txtSetModuleFilter'])) {
-         $_POST['txtSetModuleFilter'] = trim($_POST['txtSetModuleFilter']);
+         $_POST['txtSetModuleFilter'] = trim(strtoupper($_POST['txtSetModuleFilter']));
          if ($_POST['txtSetModuleFilter'] == "") {
             $_SESSION['FilterModule'] = null;
          }
          else {
             $_SESSION['FilterModule'] = htmlspecialchars($_POST['txtSetModuleFilter'], ENT_QUOTES, 'UTF-8');
          }
-
       }
    }
 }
@@ -75,7 +73,7 @@ if ($PageOptions['UserPage']['ShowFilter']) {
             <td align="right" style="padding-right:3px;">
                <form name="frmFilterModule" method="post" action="./index.php">
                   <input type="hidden" name="do" value="SetFilter" />
-                  <input type="text" class="FilterField" value="'.htmlspecialchars((string)$_SESSION['FilterModule'], ENT_QUOTES, 'UTF-8').'" name="txtSetModuleFilter" placeholder="Module" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
+                  <input type="text" class="FilterField" value="'.htmlspecialchars((string)$_SESSION['FilterModule'], ENT_QUOTES, 'UTF-8').'" name="txtSetModuleFilter" placeholder="Module(s)" onfocus="SuspendPageRefresh();" onblur="setTimeout(ReloadPage, '.$PageOptions['PageRefreshDelay'].');" />
                   <input type="submit" value="Apply" class="FilterSubmit" />
                </form>
             </td>
@@ -110,8 +108,13 @@ for ($i=0;$i<$Reflector->StationCount();$i++) {
       }
       $MO = true;
       if ($_SESSION['FilterModule'] != null) {
-         if (trim(strtolower($_SESSION['FilterModule'])) != strtolower($Reflector->Stations[$i]->GetModule())) {
-            $MO = false;
+         $MO = false;
+         // Check if any character in the filter matches the module
+         for ($m = 0; $m < strlen($_SESSION['FilterModule']); $m++) {
+            if (strtoupper($Reflector->Stations[$i]->GetModule()) === substr($_SESSION['FilterModule'], $m, 1)) {
+               $MO = true;
+               break;
+            }
          }
       }
 
