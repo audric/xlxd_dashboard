@@ -3,6 +3,6 @@
 
 ## Chagelog:
 - Mitigated several XSS vulnerabilities
-- Updated vulnerable and outedated jQuery
+- Updated vulnerable and outdated jQuery
 - Implemented multi module filtering
 
