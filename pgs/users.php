@@ -22,7 +22,6 @@ if (isset($_POST['do'])) {
                $_SESSION['FilterCallSign'] = "*".$_SESSION['FilterCallSign']."*";
             }
          }
-
       }
 
       if (isset($_POST['txtSetModuleFilter'])) {
