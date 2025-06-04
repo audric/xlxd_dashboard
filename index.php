@@ -99,7 +99,7 @@ else {
       var PageRefresh;
       
       function ReloadPage() {
-         $.get("./index.php'.(isset($_GET['show'])?'?show='.$_GET['show']:'').'", function(data) {
+         $.get("./index.php'.(isset($_GET['show'])?'?show='.htmlspecialchars($_GET['show'], ENT_QUOTES, 'UTF-8'):'').'", function(data) {
             var BodyStart = data.indexOf("<bo"+"dy");
             var BodyEnd = data.indexOf("</bo"+"dy>");
             if ((BodyStart >= 0) && (BodyEnd > BodyStart)) {

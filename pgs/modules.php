@@ -33,7 +33,7 @@ for ($i = 1; $i <= $NumberOfModules; $i++) {
    echo '
  <tr height="30" bgcolor="'.$odd.'" onMouseOver="this.bgColor=\'#FFFFCA\';" onMouseOut="this.bgColor=\''.$odd.'\';">
    <td align="center">'. $module .'</td>
-   <td align="center">'. (empty($PageOptions['ModuleNames'][$module]) ? '-' : $PageOptions['ModuleNames'][$module]) .'</td>
+   <td align="center">'. (empty($PageOptions['ModuleNames'][$module]) ? '-' : htmlspecialchars($PageOptions['ModuleNames'][$module], ENT_QUOTES, 'UTF-8')) .'</td>
    <td align="center">'. count($Reflector->GetNodesInModulesByID($module)) .'</td>
    <td align="center">'. 'REF' . $ReflectorNumber . $module . 'L' .'</td>
    <td align="center">'. (is_numeric($ReflectorNumber) ? '*' . sprintf('%01d',$ReflectorNumber) . (($i<=4)?$module:sprintf('%02d',$i)) : '-') .'</td>

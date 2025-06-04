@@ -41,10 +41,10 @@ for ($i=0;$i<count($Reflectors);$i++) {
    echo '
  <tr height="30" bgcolor="'.$odd.'" onMouseOver="this.bgColor=\'#FFFFCA\';" onMouseOut="this.bgColor=\''.$odd.'\';">
    <td align="center">'.($i+1).'</td>
-   <td><a href="'.$DASHBOARDURL.'" target="_blank" class="listinglink" title="Visit the Dashboard of&nbsp;'.$NAME.'">'.$NAME.'</a></td>
-   <td>'.$COUNTRY.'</td>
+   <td><a href="'.htmlspecialchars($DASHBOARDURL, ENT_QUOTES, 'UTF-8').'" target="_blank" class="listinglink" title="Visit the Dashboard of&nbsp;'.htmlspecialchars($NAME, ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($NAME, ENT_QUOTES, 'UTF-8').'</a></td>
+   <td>'.htmlspecialchars($COUNTRY, ENT_QUOTES, 'UTF-8').'</td>
    <td align="center" valign="middle"><img src="./img/'; if ($LASTCONTACT<(time()-1800)) { echo 'down'; } ELSE { echo 'up'; } echo '.png" height="25" /></td>
-   <td>'.$COMMENT.'</td>
+   <td>'.htmlspecialchars($COMMENT, ENT_QUOTES, 'UTF-8').'</td>
  </tr>';
 }
 
