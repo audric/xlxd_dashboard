@@ -138,8 +138,12 @@ for ($i=0;$i<$Reflector->NodeCount();$i++) {
       }
       $MO = true;
       if ($_SESSION['FilterModule'] != null) {
-         if (trim(strtolower($_SESSION['FilterModule'])) != strtolower($Reflector->Nodes[$i]->GetLinkedModule())) {
-            $MO = false;
+      
+         $MO = false;
+         for ($m = 0; $m < strlen($_SESSION['FilterModule']); $m++) {
+            if (strtoupper($Reflector->Nodes[$i]->GetLinkedModule()) === substr($_SESSION['FilterModule'], $m, 1)) {
+               $MO = true;
+            }
          }
       }
       $PR = true;
