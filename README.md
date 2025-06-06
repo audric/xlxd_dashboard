@@ -3,7 +3,8 @@
 ## Chagelog:
 - Mitigated several XSS vulnerabilities
 - Updated vulnerable and outdated jQuery
-- Implemented multi module filtering
+- Implemented multi module filtering in users and repeaters
+- Updated code to run under PHP 8.2
 
 --- 
 
