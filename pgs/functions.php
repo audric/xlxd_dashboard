@@ -46,8 +46,26 @@ function ParseTime($Input) {
 }
 
 function FormatSeconds($seconds) {
-  $seconds = abs($seconds); 
-  return sprintf("%d days %02d:%02d:%02d", $seconds/60/60/24,($seconds/60/60)%24,($seconds/60)%60,$seconds%60);
+    if ($seconds === null) {
+        return 0;
+    }
+    
+    // Make sure $seconds is a non-negative integer
+    $secs = (int) abs($seconds);
+    
+    // Compute days, hours, minutes, seconds using integer division
+    $days    = intdiv($secs, 86400);              // 86400 = 24*60*60
+    $hours   = intdiv($secs % 86400, 3600);        // remainder after removing days
+    $minutes = intdiv($secs % 3600, 60);           // remainder after removing hours
+    $secsRem = $secs % 60;                         // leftover seconds
+    
+    return sprintf(
+        "%d days %02d:%02d:%02d",
+        $days,
+        $hours,
+        $minutes,
+        $secsRem
+    );
 } 
 
 function CreateCode ($laenge) {   

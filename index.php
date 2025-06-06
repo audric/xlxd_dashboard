@@ -92,7 +92,7 @@ else {
    <link rel="stylesheet" type="text/css" href="./css/layout.css">
    <link rel="icon" href="./favicon.ico" type="image/vnd.microsoft.icon"><?php
 
-   if ($PageOptions['PageRefreshActive']) {
+   if (!$PageOptions['PageRefreshActive']) {
       echo '
    <script src="./js/jquery-3.7.1.min.js"></script>
    <script>
@@ -125,6 +125,7 @@ else {
    }
    
    if (!isset($_GET['show'])) $_GET['show'] = "";
+   $show=htmlspecialchars($GET['show']);
 ?>
 </head>
 <body>

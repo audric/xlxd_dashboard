@@ -1,0 +1,11 @@
+      $MO = true;
+      if ($_SESSION['FilterModule'] != null) {
+         $MO = false;
+         // Check if any character in the filter matches the module
+         for ($m = 0; $m < strlen($_SESSION['FilterModule']); $m++) {
+            if (strtoupper($Reflector->Stations[$i]->GetModule()) === substr($_SESSION['FilterModule'], $m, 1)) {
+               $MO = true;
+               break;
+            }
+         }
+      }

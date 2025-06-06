@@ -1,3 +1,6 @@
 .git
+.mc.menu
 xlxd.xml
 xlxd.sqlite
+Dockerfile
+docker-compose.yml

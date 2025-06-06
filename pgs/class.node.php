@@ -12,18 +12,21 @@ class Node {
    private $Prefix;
    private $RandomID;
 
+   // ← Declare FullCallsign here:
+   private $FullCallsign;
+
    public function __construct($Callsign, $IP, $LinkedModule, $Protocol, $ConnectTime, $LastHeardTime, $RandomID) {
 
       $this->IP            = $IP;
-
       $this->Protocol      = $Protocol;
       $this->ConnectTime   = ParseTime($ConnectTime);
       $this->LastHeardTime = ParseTime($LastHeardTime);
-   
+
+      // Now that FullCallsign is declared, this no longer triggers a warning:
       $this->FullCallsign  = trim(str_replace("   ", "-", $Callsign));
       $this->FullCallsign  = str_replace("  ", "-", $this->FullCallsign);
-      $this->FullCallsign  = str_replace(" ", "-", $this->FullCallsign); 
-      
+      $this->FullCallsign  = str_replace(" ", "-", $this->FullCallsign);
+
       if (strpos($Callsign, " ") !== false) {
          $this->Callsign      = trim(substr($Callsign, 0, strpos($Callsign, " ")));
          $this->Suffix        = trim(substr($Callsign, strpos($Callsign, " "), strlen($Callsign)));
@@ -35,21 +38,20 @@ class Node {
          $this->Prefix        = "";
       }
 
-      $this->LinkedModule     = trim($LinkedModule);
-      $this->RandomID         = $RandomID;
+      $this->LinkedModule  = trim($LinkedModule);
+      $this->RandomID      = $RandomID;
    }
 
-   public function GetFullCallsign()         { return $this->FullCallsign;   }
-   public function GetCallsign()             { return $this->Callsign;       }
-   public function GetIP()                   { return $this->IP;             }
-   public function GetLinkedModule()         { return $this->LinkedModule;   }
-   public function GetProtocol()             { return $this->Protocol;       }
-   public function GetConnectTime()          { return $this->ConnectTime;    }
-   public function GetLastHeardTime()        { return $this->LastHeardTime;  }
-   public function GetSuffix()               { return $this->Suffix;         }
-   public function GetPrefix()               { return $this->Prefix;         }
-   public function GetRandomID()             { return $this->RandomID;       }
-   
+   public function GetFullCallsign()   { return $this->FullCallsign; }
+   public function GetCallsign()       { return $this->Callsign; }
+   public function GetIP()             { return $this->IP; }
+   public function GetLinkedModule()   { return $this->LinkedModule; }
+   public function GetProtocol()       { return $this->Protocol; }
+   public function GetConnectTime()    { return $this->ConnectTime; }
+   public function GetLastHeardTime()  { return $this->LastHeardTime; }
+   public function GetSuffix()         { return $this->Suffix; }
+   public function GetPrefix()         { return $this->Prefix; }
+   public function GetRandomID()       { return $this->RandomID; }
 }
 
 ?>

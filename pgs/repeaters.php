@@ -16,12 +16,12 @@ if (isset($_POST['do'])) {
    if ($_POST['do'] == 'SetFilter') {
     
       if (isset($_POST['txtSetCallsignFilter'])) {
-         $_POST['txtSetCallsignFilter'] = trim($_POST['txtSetCallsignFilter']);
+         $_POST['txtSetCallsignFilter'] = strtoupper(trim($_POST['txtSetCallsignFilter']));
          if ($_POST['txtSetCallsignFilter'] == "") {
             $_SESSION['FilterCallSign'] = null;
          }
          else {
-            $_SESSION['FilterCallSign'] = $_POST['txtSetCallsignFilter'];
+            $_SESSION['FilterCallSign'] = strtoupper($_POST['txtSetCallsignFilter']);
             if (strpos($_SESSION['FilterCallSign'], "*") === false) {
                $_SESSION['FilterCallSign'] = "*".$_SESSION['FilterCallSign']."*";
             }
@@ -41,7 +41,7 @@ if (isset($_POST['do'])) {
       }
 
       if (isset($_POST['txtSetModuleFilter'])) {
-         $_POST['txtSetModuleFilter'] = trim($_POST['txtSetModuleFilter']);
+         $_POST['txtSetModuleFilter'] = strtoupper(trim($_POST['txtSetModuleFilter']));
          if ($_POST['txtSetModuleFilter'] == "") {
             $_SESSION['FilterModule'] = null;
          }
@@ -138,11 +138,12 @@ for ($i=0;$i<$Reflector->NodeCount();$i++) {
       }
       $MO = true;
       if ($_SESSION['FilterModule'] != null) {
-      
          $MO = false;
+         // Check if any character in the filter matches the module
          for ($m = 0; $m < strlen($_SESSION['FilterModule']); $m++) {
             if (strtoupper($Reflector->Nodes[$i]->GetLinkedModule()) === substr($_SESSION['FilterModule'], $m, 1)) {
                $MO = true;
+               break;
             }
          }
       }

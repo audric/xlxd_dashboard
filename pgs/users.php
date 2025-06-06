@@ -12,12 +12,12 @@ if (isset($_POST['do'])) {
    if ($_POST['do'] == 'SetFilter') {
 
       if (isset($_POST['txtSetCallsignFilter'])) {
-         $_POST['txtSetCallsignFilter'] = trim($_POST['txtSetCallsignFilter']);
+         $_POST['txtSetCallsignFilter'] = strtoupper(trim($_POST['txtSetCallsignFilter']));
          if ($_POST['txtSetCallsignFilter'] == "") {
             $_SESSION['FilterCallSign'] = null;
          }
          else {
-            $_SESSION['FilterCallSign'] = htmlspecialchars($_POST['txtSetCallsignFilter'], ENT_QUOTES, 'UTF-8');
+            $_SESSION['FilterCallSign'] = htmlspecialchars(strtoupper($_POST['txtSetCallsignFilter']), ENT_QUOTES, 'UTF-8');
             if (strpos($_SESSION['FilterCallSign'], "*") === false) {
                $_SESSION['FilterCallSign'] = "*".$_SESSION['FilterCallSign']."*";
             }

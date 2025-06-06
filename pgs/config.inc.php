@@ -56,7 +56,7 @@ $PageOptions['CustomTXT']                            = '';					// custom text in
 
 $Service['PIDFile']                                  = '/var/log/xlxd.pid';
 #$Service['XMLFile']                                  = '/var/log/xlxd.xml';
-$Service['XMLFile']                                  = '/home/audric/dev/xlxd_dashboard/xlxd.xml';
+$Service['XMLFile']                                  = '/var/www/html/xlxd.xml';
 
 $CallingHome['Active']                               = false;					// xlx phone home, true or false
 $CallingHome['MyDashBoardURL']                       = 'http://your_dashboard';			// dashboard url
